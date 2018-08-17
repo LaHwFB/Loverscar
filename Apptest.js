@@ -1,11 +1,32 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Dimensions } from "react-native";
+import CarList from "./src/components/CarList/CarList";
+import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 
-import CarList from './src/components/CarList/CarList';
-import CarDetail from './src/components/CarDetail/CarDetail';
+const FirstRoute = () => (
+  <View style={[styles.container, { backgroundColor: 'white' }]}>
+  <Text>pageVoitures</Text>
+  </View>
+);
+const SecondRoute = () => (
+  <View style={[styles.container, { backgroundColor: 'white' }]}>
+  <Text>pageLocalisation</Text>
+  </View>
+);
+const ThirdRoute = () => (
+  <View style={[styles.container, { backgroundColor: '#eee' }]}>
+  <Text>pageTest</Text>
+  </View>
+);
 
 export default class App extends Component {
   state = {
+    index: 0,
+    routes: [
+      { key: 'cars', title: 'Voitures' },
+      { key: 'locate', title: 'Ma Posiotion' },
+      { key: 'test', title: 'Test' },
+    ],
     cars : [
       {
         key : Math.random(),
@@ -57,33 +78,24 @@ export default class App extends Component {
   };
 
 
-  CarSelectedHandler = key => {
-    this.setState(prevState => {
-      return{
-        selectedCar: prevState.cars.find(car =>{
-          return car.key === key;
-        })
-      }
-    })
-  };
-
-  ModalClosedHandler= () => {
-    this.setState(prevState => {
-      return{
-        selectedCar : null
-      }
-    })
-  };
+  //CarSelectedHandler = key => alert('item pressed');
 
   render() {
     return (
-      <View style={styles.container}>
-      <CarDetail selectedCar={this.state.selectedCar} onModalClosed={this.ModalClosedHandler}/>
-      <CarList
-        cars={this.state.cars}
-        onItemPressed={this.CarSelectedHandler}
+      <TabView
+        navigationState={this.state}
+        renderScene={SceneMap({
+          cars: FirstRoute,
+          locate: SecondRoute,
+          test: ThirdRoute,
+        })}
+        onIndexChange={index => this.setState({ index })}
+        initialLayout={{ width: Dimensions.get('window').width }}
       />
-      </View>
+      // <CarList
+      //   cars={this.state.cars}
+      //   onItemPressed={()=> 'true'}
+      // />
     );
   }
 }

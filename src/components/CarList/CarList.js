@@ -1,14 +1,14 @@
 import React from "react";
-import { Flatlist, StyleSheet } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import CarItem from "../CarItem/CarItem";
 
 const CarList = props => {
   return(
-    <Flatlist
-      style={styles.listcontainer}
+    <FlatList
+      style={styles.listContainer}
       data={props.cars}
       renderItem={ (info) => (
-        <CarList
+        <CarItem
           carName = {info.item.name}
           carImage = {info.item.image}
           sieges = {info.item.sieges}
@@ -21,9 +21,9 @@ const CarList = props => {
 };
 
 
-const styles=StyleSheet.create({
-  listcontainer: {
-    width : '100%'
+const styles = StyleSheet.create({
+  listContainer: {
+    width: "100%",
   }
 });
 
